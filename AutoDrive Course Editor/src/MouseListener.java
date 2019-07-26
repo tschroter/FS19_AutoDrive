@@ -4,8 +4,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.Map;
 
 public class MouseListener implements java.awt.event.MouseListener, MouseMotionListener, MouseWheelListener {
     MapPanel mapPanel;
@@ -25,7 +23,7 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            if (this.mapPanel.editor.editorState == AutoDriveEditor.EDITORSTATE_CONNECTING) {
+            if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_CONNECTING) {
                 movingNode = mapPanel.getNodeAt(e.getX(), e.getY());
                 if(movingNode == null && this.mapPanel.editor.selected != null){
                     Point2D worldPos = mapPanel.screenPosToWorldPos((int)e.getX(),(int)e.getY());
@@ -45,11 +43,11 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
                     }
                 }
             }
-            if (this.mapPanel.editor.editorState == AutoDriveEditor.EDITORSTATE_CREATING) {
+            if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_CREATING) {
                 Point2D worldPos = mapPanel.screenPosToWorldPos((int)e.getX(),(int)e.getY());
                 this.mapPanel.createNode((int)worldPos.getX(), (int)worldPos.getY());
             }
-            if (this.mapPanel.editor.editorState == AutoDriveEditor.EDITORSTATE_CREATING_DESTINATION) {
+            if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_CREATING_DESTINATION) {
                 movingNode = mapPanel.getNodeAt(e.getX(), e.getY());
                 if (movingNode != null) {
                     String destinationName = JOptionPane.showInputDialog("New destination name:", "" + movingNode.id );
@@ -72,13 +70,13 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
             movingNode = mapPanel.getNodeAt(e.getX(), e.getY());
             if (movingNode != null) {
                 isDragging = false;
-                if (this.mapPanel.editor.editorState == AutoDriveEditor.EDITORSTATE_MOVING) {
+                if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_MOVING) {
                     isDraggingNode = true;
                 }
-                if (this.mapPanel.editor.editorState == AutoDriveEditor.EDITORSTATE_DELETING) {
+                if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_DELETING) {
                     this.mapPanel.removeNode(movingNode);
                 }
-                if (this.mapPanel.editor.editorState == AutoDriveEditor.EDITORSTATE_DELETING_DESTINATION) {
+                if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_DELETING_DESTINATION) {
                     this.mapPanel.removeDestination(movingNode);
                 }
             }
@@ -99,7 +97,7 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
             rectangleEnd = new Point2D.Double(e.getX(), e.getY());
             System.out.println("Rectangle end set at " + e.getX() + "/" + e.getY());
             if (rectangleStart != null) {
-                if (this.mapPanel.editor.editorState == AutoDriveEditor.EDITORSTATE_DELETING) {
+                if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_DELETING) {
 
                     System.out.println("Removing all nodes in area");
                     this.mapPanel.removeAllNodesInScreenArea(rectangleStart, rectangleEnd);
@@ -140,7 +138,7 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
                 mapPanel.moveNodeBy(this.movingNode, diffX, diffY);
             }
         }
-        if (this.mapPanel.editor.editorState == AutoDriveEditor.EDITORSTATE_DELETING && this.rectangleStart != null) {
+        if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_DELETING && this.rectangleStart != null) {
             this.mapPanel.repaint();
         }
     }
@@ -149,7 +147,7 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
     public void mouseMoved(MouseEvent e) {
         mousePosX = e.getX();
         mousePosY = e.getY();
-        if (mapPanel.editor.editorState == AutoDriveEditor.EDITORSTATE_CONNECTING && mapPanel.editor.selected != null) {
+        if (mapPanel.editor.editorState == EditorState.EDITORSTATE_CONNECTING && mapPanel.editor.selected != null) {
             mapPanel.repaint();
         }
         movingNode = mapPanel.getNodeAt(e.getX(), e.getY());

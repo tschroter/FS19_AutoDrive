@@ -1,14 +1,8 @@
-import org.xml.sax.SAXException;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 
 public class MapPanel extends JPanel{
@@ -70,7 +64,7 @@ public class MapPanel extends JPanel{
                     g.drawString(mapMarker.name, (int) (nodePos.getX()), (int) (nodePos.getY()));
                 }
 
-                if (editor.selected != null && editor.editorState == AutoDriveEditor.EDITORSTATE_CONNECTING) {
+                if (editor.selected != null && editor.editorState == EditorState.EDITORSTATE_CONNECTING) {
                     Point2D nodePos = worldPosToScreenPos(editor.selected.x + 1024, editor.selected.z + 1024);
                     g.setColor(Color.WHITE);
                     g.drawLine((int) (nodePos.getX()), (int) (nodePos.getY()), (int) (editor.mouseListener.mousePosX), (int) (editor.mouseListener.mousePosY));

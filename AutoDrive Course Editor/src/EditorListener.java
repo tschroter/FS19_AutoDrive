@@ -5,8 +5,6 @@ import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Point2D;
-import java.io.File;
 import java.io.IOException;
 
 public class EditorListener implements ActionListener {
@@ -39,32 +37,32 @@ public class EditorListener implements ActionListener {
             }
             case "Move Nodes":
             {
-                this.editor.editorState = AutoDriveEditor.EDITORSTATE_MOVING;
+                this.editor.editorState = EditorState.EDITORSTATE_MOVING;
                 break;
             }
             case "Remove Nodes":
             {
-                this.editor.editorState = AutoDriveEditor.EDITORSTATE_DELETING;
+                this.editor.editorState = EditorState.EDITORSTATE_DELETING;
                 break;
             }
             case "Remove Destinations":
             {
-                this.editor.editorState = AutoDriveEditor.EDITORSTATE_DELETING_DESTINATION;
+                this.editor.editorState = EditorState.EDITORSTATE_DELETING_DESTINATION;
                 break;
             }
             case "Connect Nodes":
             {
-                this.editor.editorState = AutoDriveEditor.EDITORSTATE_CONNECTING;
+                this.editor.editorState = EditorState.EDITORSTATE_CONNECTING;
                 break;
             }
             case "Create Nodes":
             {
-                this.editor.editorState = AutoDriveEditor.EDITORSTATE_CREATING;
+                this.editor.editorState = EditorState.EDITORSTATE_CREATING;
                 break;
             }
             case "Create Destinations":
             {
-                this.editor.editorState = AutoDriveEditor.EDITORSTATE_CREATING_DESTINATION;
+                this.editor.editorState = EditorState.EDITORSTATE_CREATING_DESTINATION;
                 break;
             }
             case "Load":
@@ -110,6 +108,6 @@ public class EditorListener implements ActionListener {
             editor.isFourTimesMap = editor.fourTimesMap.isSelected();
         }
 
-        this.editor.statusbar.setText(e.getActionCommand());
+        this.editor.setStatusbarText(e.getActionCommand());
     }
 }

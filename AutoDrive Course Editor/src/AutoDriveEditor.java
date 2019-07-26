@@ -25,15 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class AutoDriveEditor extends JFrame {
-    public static final int EDITORSTATE_MOVING = 0;
-    public static final int EDITORSTATE_DELETING = 1;
-    public static final int EDITORSTATE_CONNECTING = 2;
-    public static final int EDITORSTATE_CREATING = 3;
-    public static final int EDITORSTATE_DELETING_DESTINATION = 4;
-    public static final int EDITORSTATE_CREATING_DESTINATION = 5;
-
-
-    public Statusbar statusbar;
+    private Statusbar statusbar;
     public MapPanel mapPanel;
     public JPanel buttonPanel;
     public JButton saveButton;
@@ -51,7 +43,7 @@ public class AutoDriveEditor extends JFrame {
 
     public boolean isFourTimesMap = false;
 
-    public int editorState = EDITORSTATE_MOVING;
+    public EditorState editorState = EditorState.EDITORSTATE_MOVING;
 
     public EditorListener editorListener;
 
@@ -144,6 +136,10 @@ public class AutoDriveEditor extends JFrame {
         pack();
         setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void setStatusbarText (String text){
+        statusbar.setText(text);
     }
 
 

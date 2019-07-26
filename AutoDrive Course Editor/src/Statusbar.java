@@ -4,8 +4,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import sun.swing.SwingAccessor;
-
 public class Statusbar extends JPanel {
 
     private JLabel textLabel;

@@ -1,6 +1,3 @@
-import java.util.LinkedList;
-import java.util.Map;
-
 public class MapMarker implements Comparable {
 
     public MapNode mapNode;
