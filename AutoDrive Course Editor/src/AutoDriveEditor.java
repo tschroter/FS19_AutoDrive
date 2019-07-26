@@ -142,6 +142,10 @@ public class AutoDriveEditor extends JFrame {
         statusbar.setText(text);
     }
 
+    public void refreshEditorState (){
+        statusbar.setCurrentEditorState(this.editorState);
+    }
+
 
     public static void main(String[] args) {
         // set look and feel to the system look and feel

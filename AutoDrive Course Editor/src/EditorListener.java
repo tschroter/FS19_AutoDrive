@@ -108,6 +108,6 @@ public class EditorListener implements ActionListener {
             editor.isFourTimesMap = editor.fourTimesMap.isSelected();
         }
 
-        this.editor.setStatusbarText(e.getActionCommand());
+        this.editor.refreshEditorState();
     }
 }
