@@ -206,9 +206,9 @@ public class MapPanel extends JPanel{
         }
     }
 
-    public void createNode(int screenX, int screenY) {
+    public MapNode createNode(int screenX, int screenY) {
         if (this.roadMap == null || this.image == null) {
-            return;
+            return null;
         }
         MapNode mapNode = new MapNode(this.roadMap.mapNodes.size()+1, screenX, -1, screenY);
 
@@ -218,6 +218,7 @@ public class MapPanel extends JPanel{
 
         this.roadMap.mapNodes.add(mapNode);
         this.repaint();
+        return mapNode;
     }
 
     public Point2D screenPosToWorldPos(int screenX, int screenY) {

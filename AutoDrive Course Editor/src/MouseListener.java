@@ -27,7 +27,14 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
         if (e.getButton() == MouseEvent.BUTTON1) {
             if (this.mapPanel.editor.editorState == AutoDriveEditor.EDITORSTATE_CONNECTING) {
                 movingNode = mapPanel.getNodeAt(e.getX(), e.getY());
-                if (movingNode != null) {
+                if(movingNode == null && this.mapPanel.editor.selected != null){
+                    Point2D worldPos = mapPanel.screenPosToWorldPos((int)e.getX(),(int)e.getY());
+                    movingNode = this.mapPanel.createNode((int)worldPos.getX(), (int)worldPos.getY());
+                    //movingNode = mapPanel.getNodeAt(e.getX(), e.getY());
+                    mapPanel.createConnectionBetween(this.mapPanel.editor.selected, movingNode);
+                    this.mapPanel.editor.selected = movingNode;
+                    this.mapPanel.repaint();
+                }else if (movingNode != null) {
                     if (this.mapPanel.editor.selected == null) {
                         this.mapPanel.editor.selected = movingNode;
                         this.mapPanel.repaint();

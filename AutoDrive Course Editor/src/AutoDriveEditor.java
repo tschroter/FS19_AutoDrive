@@ -1,7 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +19,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import java.io.File;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.Map;
@@ -35,18 +33,18 @@ public class AutoDriveEditor extends JFrame {
     public static final int EDITORSTATE_CREATING_DESTINATION = 5;
 
 
-
+    public Statusbar statusbar;
     public MapPanel mapPanel;
     public JPanel buttonPanel;
     public JButton saveButton;
     public JButton loadRoadMapButton;
     public JButton loadImageButton;
-    public JToggleButton removeNode;
-    public JToggleButton removeDestination;
-    public JToggleButton moveNode;
-    public JToggleButton connectNodes;
-    public JToggleButton createNode;
-    public JToggleButton createDestination;
+    public JButton removeNode;
+    public JButton removeDestination;
+    public JButton moveNode;
+    public JButton connectNodes;
+    public JButton createNode;
+    public JButton createDestination;
     public JToggleButton fourTimesMap;
 
     public MapNode selected = null;
@@ -76,6 +74,10 @@ public class AutoDriveEditor extends JFrame {
         // add the panel to this frame
         add(mapPanel, BorderLayout.CENTER);
 
+        statusbar = new Statusbar();
+
+        add(statusbar, BorderLayout.SOUTH);
+
         this.editorListener = new EditorListener(this);
 
         buttonPanel = new JPanel(new FlowLayout());
@@ -90,32 +92,32 @@ public class AutoDriveEditor extends JFrame {
         loadImageButton.setActionCommand("Load Image");
         buttonPanel.add(loadImageButton);
 
-        moveNode = new JToggleButton("Move Nodes");
+        moveNode = new JButton("Move Nodes");
         moveNode.addActionListener(this.editorListener);
         moveNode.setActionCommand("Move Nodes");
         buttonPanel.add(moveNode);
 
-        connectNodes = new JToggleButton("Connect Nodes");
+        connectNodes = new JButton("Connect Nodes");
         connectNodes.addActionListener(this.editorListener);
         connectNodes.setActionCommand("Connect Nodes");
         buttonPanel.add(connectNodes);
 
-        removeNode = new JToggleButton("Delete Nodes");
+        removeNode = new JButton("Delete Nodes");
         removeNode.addActionListener(this.editorListener);
         removeNode.setActionCommand("Remove Nodes");
         buttonPanel.add(removeNode);
 
-        removeDestination = new JToggleButton("Delete Destination");
+        removeDestination = new JButton("Delete Destination");
         removeDestination.addActionListener(this.editorListener);
         removeDestination.setActionCommand("Remove Destinations");
         buttonPanel.add(removeDestination);
 
-        createNode = new JToggleButton("Create Nodes");
+        createNode = new JButton("Create Nodes");
         createNode.addActionListener(this.editorListener);
         createNode.setActionCommand("Create Nodes");
         buttonPanel.add(createNode);
 
-        createDestination = new JToggleButton("Create Destination");
+        createDestination = new JButton("Create Destination");
         createDestination.addActionListener(this.editorListener);
         createDestination.setActionCommand("Create Destinations");
         buttonPanel.add(createDestination);
