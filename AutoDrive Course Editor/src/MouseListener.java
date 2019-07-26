@@ -20,44 +20,67 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
         this.mapPanel = mapPanel;
     }
 
+    private void connectNodes(int xPos, int yPos){
+        movingNode = mapPanel.getNodeAt(xPos, yPos);
+        if(movingNode == null && this.mapPanel.editor.selected != null){
+            Point2D worldPos = mapPanel.screenPosToWorldPos(xPos,yPos);
+            movingNode = this.mapPanel.createNode((int)worldPos.getX(), (int)worldPos.getY());
+            //movingNode = mapPanel.getNodeAt(e.getX(), e.getY());
+            mapPanel.createConnectionBetween(this.mapPanel.editor.selected, movingNode);
+            this.mapPanel.editor.selected = movingNode;
+            this.mapPanel.repaint();
+        }else if (movingNode != null) {
+            if (this.mapPanel.editor.selected == null) {
+                this.mapPanel.editor.selected = movingNode;
+                this.mapPanel.repaint();
+            } else {
+                mapPanel.createConnectionBetween(this.mapPanel.editor.selected, movingNode);
+                this.mapPanel.editor.selected = null;
+                this.mapPanel.repaint();
+            }
+        }
+    }
+
+    private void createNode(int xPos, int yPos){
+        Point2D worldPos = mapPanel.screenPosToWorldPos(xPos,yPos);
+        this.mapPanel.createNode((int)worldPos.getX(), (int)worldPos.getY());
+    }
+
+    private void createDestination (int xPos, int yPos){
+        movingNode = mapPanel.getNodeAt(xPos, yPos);
+        if (movingNode != null) {
+            String destinationName = JOptionPane.showInputDialog("New destination name:", "" + movingNode.id );
+            if (destinationName != null) {
+                mapPanel.createDestinationAt(movingNode, destinationName);
+                this.mapPanel.repaint();
+            }
+        }
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_CONNECTING) {
-                movingNode = mapPanel.getNodeAt(e.getX(), e.getY());
-                if(movingNode == null && this.mapPanel.editor.selected != null){
-                    Point2D worldPos = mapPanel.screenPosToWorldPos((int)e.getX(),(int)e.getY());
-                    movingNode = this.mapPanel.createNode((int)worldPos.getX(), (int)worldPos.getY());
-                    //movingNode = mapPanel.getNodeAt(e.getX(), e.getY());
-                    mapPanel.createConnectionBetween(this.mapPanel.editor.selected, movingNode);
-                    this.mapPanel.editor.selected = movingNode;
-                    this.mapPanel.repaint();
-                }else if (movingNode != null) {
-                    if (this.mapPanel.editor.selected == null) {
-                        this.mapPanel.editor.selected = movingNode;
-                        this.mapPanel.repaint();
-                    } else {
-                        mapPanel.createConnectionBetween(this.mapPanel.editor.selected, movingNode);
-                        this.mapPanel.editor.selected = null;
-                        this.mapPanel.repaint();
-                    }
+            switch (this.mapPanel.editor.editorState){
+                case EDITORSTATE_CONNECTING:
+                {
+                    connectNodes((int)e.getX(), (int) e.getY());
+                    break;
+                }
+                case EDITORSTATE_CREATING:
+                {
+                    createNode((int) e.getX(), (int) e.getY());
+                    break;
+                }
+                case EDITORSTATE_CREATING_DESTINATION:
+                {
+                    createDestination ((int) e.getX(), (int) e.getY());
+                    break;
+                }
+                default:
+                {
+                    //Do nothing
                 }
             }
-            if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_CREATING) {
-                Point2D worldPos = mapPanel.screenPosToWorldPos((int)e.getX(),(int)e.getY());
-                this.mapPanel.createNode((int)worldPos.getX(), (int)worldPos.getY());
-            }
-            if (this.mapPanel.editor.editorState == EditorState.EDITORSTATE_CREATING_DESTINATION) {
-                movingNode = mapPanel.getNodeAt(e.getX(), e.getY());
-                if (movingNode != null) {
-                    String destinationName = JOptionPane.showInputDialog("New destination name:", "" + movingNode.id );
-                    if (destinationName != null) {
-                        mapPanel.createDestinationAt(movingNode, destinationName);
-                        this.mapPanel.repaint();
-                    }
-                }
-            }
-
         }
     }
 
@@ -123,11 +146,15 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
         mousePosX = e.getX();
         mousePosY = e.getY();
         if (isDragging) {
-            double diffX = e.getX() - lastX;
-            double diffY = e.getY() - lastY;
-            this.lastX = e.getX();
-            this.lastY = e.getY();
-            mapPanel.moveMapBy(diffX, diffY);
+            if(this.mapPanel.editor.editorState == EditorState.EDITORSTATE_CONNECTING){
+
+            }else{
+                double diffX = e.getX() - lastX;
+                double diffY = e.getY() - lastY;
+                this.lastX = e.getX();
+                this.lastY = e.getY();
+                mapPanel.moveMapBy(diffX, diffY);
+            }
         }
         else {
             if (isDraggingNode) {
